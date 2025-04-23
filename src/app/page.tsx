@@ -4,9 +4,9 @@ import { getServerSession } from "next-auth";
 import { getAllPosts } from "@/lib/api";
 import { Post } from "@/interfaces/post";
 import Container from "@/app/_components/container";
-import { authOptions } from "./api/auth/route";
 import AddBlogButton from "./_components/blog/addBlogButton";
 import PostList from "./_components/postlist";
+import { authOptions } from "./api/auth/[...nextauth]/route";
 
 export default async function IndexPage() {
   // Get session using getServerSession
