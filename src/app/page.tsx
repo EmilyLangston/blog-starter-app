@@ -6,11 +6,10 @@ import { Post } from "@/interfaces/post";
 import Container from "@/app/_components/container";
 import AddBlogButton from "./_components/blog/addBlogButton";
 import PostList from "./_components/postlist";
-import { authOptions } from "./api/auth/[...nextauth]/route";
 
 export default async function IndexPage() {
   // Get session using getServerSession
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession();
   const currentUsername = session?.user?.name ?? null;
 
   // Fetch all posts
