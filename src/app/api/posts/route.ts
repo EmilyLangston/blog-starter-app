@@ -19,9 +19,3 @@ export async function POST(req: Request) {
 
     return NextResponse.json(result);
 }
-
-export async function DELETE(slug: string) {
-    const client = await clientPromise;
-    const db = client.db();
-    return db.collection("posts").deleteOne({ slug });
-}
