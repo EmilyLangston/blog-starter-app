@@ -1,12 +1,9 @@
-import { NextResponse } from "next/server";
 import { deletePostBySlug, getPostBySlug } from "@/lib/api";
 import { getServerSession } from "next-auth";
+import { NextResponse } from "next/server";
 
-export async function DELETE(
-    req: Request,
-    { params }: { params: { slug: string } }
-): Promise<Response> {
-    const slug = params.slug;
+export async function POST(req: Request) {
+    const slug: string = await req.json();
 
     const session = await getServerSession();
     if (!session?.user?.email) {

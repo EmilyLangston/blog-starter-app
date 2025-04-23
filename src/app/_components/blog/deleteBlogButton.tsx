@@ -12,8 +12,16 @@ export default function DeleteBlogButton({ slug }: { slug?: string }) {
         }
 
         try {
-            const res = await fetch(`/api/posts/${slug}`, {
-                method: "DELETE",
+            // const res = await fetch(`/api/posts/${slug}`, {
+            //     method: "DELETE",
+            // });
+
+            const res = await fetch("/api/posts/delete", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(slug),
             });
 
             if (!res.ok) {
