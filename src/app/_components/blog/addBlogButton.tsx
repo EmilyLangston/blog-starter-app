@@ -12,7 +12,7 @@ export default function AddBlogButton() {
                 <button
                     className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                 >
-                    Add Blog
+                    Post Blog
                 </button>
             }
         </Link>
