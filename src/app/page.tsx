@@ -3,23 +3,18 @@
 import { getServerSession } from "next-auth";
 import { getAllPosts } from "@/lib/api";
 import { Post } from "@/interfaces/post";
-import Link from "next/link";
 import Container from "@/app/_components/container";
-import { HeroPost } from "@/app/_components/hero-post";
-import { MoreStories } from "@/app/_components/more-stories";
 import { authOptions } from "./api/auth/route";
 import AddBlogButton from "./_components/blog/addBlogButton";
+import PostList from "./_components/postlist";
 
 export default async function IndexPage() {
   // Get session using getServerSession
   const session = await getServerSession(authOptions);
+  const currentUsername = session?.user?.name ?? null;
 
   // Fetch all posts
   const posts: Post[] = await getAllPosts();
-
-  // Separate hero post and more posts
-  const heroPost = posts[0];
-  const morePosts = posts.slice(1);
 
   // Render the page content
   return (
@@ -30,20 +25,7 @@ export default async function IndexPage() {
           <AddBlogButton />
         </div>
 
-        {/* Hero Post */}
-        {heroPost && (
-          <HeroPost
-            title={heroPost.title}
-            coverImage={heroPost.coverImage}
-            date={heroPost.date}
-            author={heroPost.author}
-            slug={heroPost.slug}
-            excerpt={heroPost.excerpt}
-          />
-        )}
-
-        {/* More Posts */}
-        {morePosts.length > 0 && <MoreStories posts={morePosts} />}
+        <PostList posts={posts} currentUsername={currentUsername} />
       </Container>
     </main>
   );

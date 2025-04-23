@@ -1,9 +1,10 @@
+'use client'
+
 import { type Author } from "@/interfaces/author";
 import Link from "next/link";
 import Avatar from "./avatar";
 import CoverImage from "./cover-image";
 import DateFormatter from "./date-formatter";
-import { getServerSession } from "next-auth"; // or wherever you store auth
 import DeleteBlogButton from "./blog/deleteBlogButton";
 
 type Props = {
@@ -13,25 +14,18 @@ type Props = {
   excerpt: string;
   author: Author;
   slug: string;
+  currentUsername?: string;
 };
 
-export async function PostPreview({
+export function PostPreview({
   title,
   coverImage,
   date,
   excerpt,
   author,
   slug,
+  currentUsername
 }: Props) {
-  const session = await getServerSession();
-
-  async function handleDelete(slug: string) {
-    await fetch(`/api/posts/${slug}`, {
-      method: "DELETE",
-    });
-    window.location.reload(); // or re-fetch data dynamically
-  }
-
   return (
     <div>
       <div className="mb-5">
@@ -47,7 +41,7 @@ export async function PostPreview({
       </div>
       <p className="text-lg leading-relaxed mb-4">{excerpt}</p>
       <Avatar name={author.name} picture={author.picture} />
-      {session?.user.name === author.name && (
+      {currentUsername === author.name && (
         <DeleteBlogButton slug={slug} />
       )}
     </div>

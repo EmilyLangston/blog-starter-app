@@ -94,19 +94,27 @@ export default function NewPostPage() {
                             />
                         </div>
 
-                        <div>
-                            <label htmlFor="coverImage" className="block text-sm font-medium text-gray-700">
-                                Cover Image URL
-                            </label>
-                            <input
-                                type="text"
-                                id="coverImage"
-                                value={coverImage}
-                                onChange={(e) => setCoverImage(e.target.value)}
-                                className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                                required
-                            />
-                        </div>
+                        <input
+                            type="file"
+                            id="coverImage"
+                            accept="image/*"
+                            onChange={(e) => {
+                                const file = e.target.files?.[0];
+                                if (file) {
+                                    const reader = new FileReader();
+                                    reader.onloadend = () => {
+                                        if (reader.result) {
+                                            setCoverImage(reader.result.toString());
+                                        }
+                                    };
+                                    reader.readAsDataURL(file); // Convert to base64 string
+                                }
+                            }}
+                            className="mt-1 block w-full text-sm text-gray-900 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                        />
+                        {coverImage && (
+                            <img src={coverImage} alt="Cover Preview" className="mt-2 rounded shadow" />
+                        )}
 
                         {/* Hidden Author Name and Author Picture fields (will be set automatically from session) */}
                         <input type="hidden" value={author.name} />

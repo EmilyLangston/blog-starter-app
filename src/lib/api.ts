@@ -4,7 +4,15 @@ import { Post } from "@/interfaces/post";
 export async function getAllPosts() {
   const client = await clientPromise;
   const db = client.db(); // optional: pass your DB name here
-  const posts = await db.collection("posts").find({}).toArray();
+  const postsFromDb = await db.collection("posts").find({}).toArray();
+
+  const posts = postsFromDb.map((post) => ({
+    ...post,
+    _id: post._id.toString(), // convert ObjectId to string
+    date: post.date?.toString(),
+    createdAt: post.createdAt?.toString(),
+  }));
+
   return posts;
 }
 

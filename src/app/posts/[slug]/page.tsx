@@ -7,6 +7,7 @@ import Container from "@/app/_components/container";
 import { PostBody } from "@/app/_components/post-body";
 import { PostHeader } from "@/app/_components/post-header";
 import { Post } from "@/interfaces/post";
+import Image from "next/image";
 
 type Params = {
   params: {
@@ -33,7 +34,7 @@ export default async function Post({ params }: Params) {
             date={post.date}
             author={post.author || { name: "", picture: "" }}
           />
-          <PostBody content={content} />
+          <PostBody content={content} ogImage={post.ogImage.url} />
         </article>
       </Container>
     </main>
