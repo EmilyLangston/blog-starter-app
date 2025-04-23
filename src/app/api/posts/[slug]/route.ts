@@ -5,14 +5,13 @@ import { getServerSession } from "next-auth"; // Or your custom auth
 
 export async function DELETE(
     req: Request,
-    context: { params: { slug: string } }
-) {
+    { params }: { params: { slug: string } }
+): Promise<Response> {
+    const slug = params.slug;
     const session = await getServerSession(); // get current user
     if (!session) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-
-    const { slug } = context.params;
 
     const post = await getPostBySlug(slug);
     if (!post || post.author.name !== session.user?.name) {
