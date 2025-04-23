@@ -8,12 +8,13 @@ export default function AddBlogButton() {
 
     return (
         <Link href="/new-post">
-            <button
-                disabled={!session}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            >
-                Add Blog
-            </button>
+            {session &&
+                <button
+                    className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                >
+                    Add Blog
+                </button>
+            }
         </Link>
     );
 }
