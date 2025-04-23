@@ -8,14 +8,8 @@ import { PostBody } from "@/app/_components/post-body";
 import { PostHeader } from "@/app/_components/post-header";
 import { Post } from "@/interfaces/post";
 
-type PageProps = {
-  params: {
-    slug: string;
-  };
-};
-
-export default async function PostPage({ params }: PageProps) {
-  const { slug } = await params
+export default async function PostPage({ params }: { params: { slug: string } }) {
+  const { slug } = await params;
   const post: Post | undefined = await getPostBySlug(slug);
   if (!post) return notFound();
 
@@ -38,7 +32,7 @@ export default async function PostPage({ params }: PageProps) {
   );
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const { slug } = await params;
   const post: Post | undefined = await getPostBySlug(slug);
   if (!post) return notFound();
