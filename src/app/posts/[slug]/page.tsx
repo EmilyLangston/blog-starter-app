@@ -1,15 +1,21 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getPostBySlug } from "@/lib/api";
+import { getAllPosts, getPostBySlug } from "@/lib/api";
+import { CMS_NAME } from "@/lib/constants";
 import markdownToHtml from "@/lib/markdownToHtml";
 import Container from "@/app/_components/container";
 import { PostBody } from "@/app/_components/post-body";
 import { PostHeader } from "@/app/_components/post-header";
 import { Post } from "@/interfaces/post";
 
-export default async function PostPage(props: { params: { slug: string } }) {
-  const { slug } = await props.params; // 👈 await before accessing `slug`
+type PageProps = {
+  params: {
+    slug: string;
+  };
+};
 
+export default async function PostPage({ params }: PageProps) {
+  const { slug } = await params
   const post: Post | undefined = await getPostBySlug(slug);
   if (!post) return notFound();
 
@@ -30,4 +36,25 @@ export default async function PostPage(props: { params: { slug: string } }) {
       </Container>
     </main>
   );
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const post: Post | undefined = await getPostBySlug(slug);
+  if (!post) return notFound();
+
+  const title = `${post.title} | Next.js Blog Example with ${CMS_NAME}`;
+
+  return {
+    title,
+    openGraph: {
+      title,
+      images: [post.ogImage?.url || ""],
+    },
+  };
+}
+
+export async function generateStaticParams() {
+  const posts: Post[] = await getAllPosts();
+  return posts.map((post) => ({ slug: post.slug }));
 }
