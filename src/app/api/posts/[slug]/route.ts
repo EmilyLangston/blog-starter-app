@@ -12,11 +12,13 @@ export async function DELETE(
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const post = await getPostBySlug(params.slug);
-    if (!post || post.author.name !== session.user.name) {
+    const { slug } = context.params;
+
+    const post = await getPostBySlug(slug);
+    if (!post || post.author.name !== session.user?.name) {
         return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
-    await deletePostBySlug(params.slug);
+    await deletePostBySlug(slug);
     return NextResponse.json({ message: "Post deleted" }, { status: 200 });
 }
